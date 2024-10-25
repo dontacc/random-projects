@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 import datetime
 
@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-f=npz2(++_n!ckjb59one8l73dy84pn2$=xt)4^gn2yo@jj!m_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -39,8 +39,10 @@ INSTALLED_APPS = [
 
     # Local apps
     'authentication',
+    'sync_bnb',
 
     # 3rd-party packages
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -83,20 +85,23 @@ DATABASES = {
     }
 }
 
-
 AUTH_USER_MODEL = "authentication.User"
 JWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=300),
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=10),
     'JWT_ALGORITHM': 'HS256',
     'JWT_ALLOW_REFRESH': True,
+    'JWT_AUTH_HEADER_PREFIX': 'Bearer'
 }
 
+BSC_SCAN_API_URL = os.environ.get("BSC_SCAN_API_URL", "https://api.bscscan.com/api")
+
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'core.authentication.JSONWebTokenAuthentication',
+    ),
+    'EXCEPTION_HANDLER': 'core.authentication.custom_exception_handler',
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
     ),
 }
 
