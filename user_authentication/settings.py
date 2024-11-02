@@ -13,6 +13,8 @@ import os
 from pathlib import Path
 import datetime
 
+# from .settings import JAZZMIN_SETTINGS
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,13 +25,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-f=npz2(++_n!ckjb59one8l73dy84pn2$=xt)4^gn2yo@jj!m_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", True)
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["localhost"]
 
 # Application definition
-
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,6 +47,9 @@ INSTALLED_APPS = [
     'rest_framework',
 ]
 
+'''
+MIDDALWARES
+'''
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -77,7 +82,9 @@ WSGI_APPLICATION = 'user_authentication.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
+'''
+Database
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -85,6 +92,21 @@ DATABASES = {
     }
 }
 
+'''
+Django Jazzmin Template
+'''
+JAZZMIN_SETTINGS = {
+    "site_logo": "admin_pannel/logo_admin_pannel.png",
+}
+
+'''
+BEP-20 URL for explore bnb transactions
+'''
+BSC_SCAN_API_URL = os.environ.get("BSC_SCAN_API_URL", "https://api.bscscan.com/api")
+
+'''
+JWT CONFIGS
+'''
 AUTH_USER_MODEL = "authentication.User"
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=10),
@@ -93,8 +115,9 @@ JWT_AUTH = {
     'JWT_AUTH_HEADER_PREFIX': 'Bearer'
 }
 
-BSC_SCAN_API_URL = os.environ.get("BSC_SCAN_API_URL", "https://api.bscscan.com/api")
-
+'''
+RESTFRAMEWORK CONFIGS
+'''
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'core.authentication.JSONWebTokenAuthentication',
@@ -105,9 +128,21 @@ REST_FRAMEWORK = {
     ),
 }
 
+'''
+STATIC FILES
+'''
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',  # Adjust as needed
+]
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
+
+'''
+DJANGO VALIDATORS
+'''
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -126,6 +161,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
+
+'''
+Language and Localization Settings
+'''
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -143,3 +182,28 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+#
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = os.environ["EMAIL_HOST"]
+# EMAIL_PORT = os.environ["EMAIL_PORT"]
+# EMAIL_HOST_USER = os.environ["EMAIL_HOST_USER"]
+# EMAIL_HOST_PASSWORD = os.environ["EMAIL_HOST_PASSWORD"]
+# EMAIL_USE_TLS = True
+
+
+'''
+EMAIL SERVICE CONFIG
+'''
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = "sandbox.smtp.mailtrap.io"
+EMAIL_PORT = 2525
+EMAIL_HOST_USER = "9aae632c7f7eb9"
+EMAIL_HOST_PASSWORD = "0006b9f01b2dee"
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = False
+EMAIL_TIMEOUT = 10
+
+'''
+CELERY CONFIG
+'''
+CELERY_BROKER_URL = "redis://localhost:6379/0"

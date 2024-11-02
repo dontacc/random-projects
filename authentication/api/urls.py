@@ -7,6 +7,4 @@ urlpatterns = [
     path("refresh-token/", refresh_jwt_token),
     path("verify-token/", verify_jwt_token),
     path("login/", LoginAPI.as_view(), name="login"),
-    path("transaction-history/", TransactionHistory.as_view(), name="transaction-history"),
-    path("bep-20-token/", GetBep20token.as_view(), name="get-bep-token")
 ]
