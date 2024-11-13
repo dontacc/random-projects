@@ -42,9 +42,12 @@ INSTALLED_APPS = [
     # Local apps
     'authentication',
     'sync_bnb',
+    's3',
+    'core',
 
     # 3rd-party packages
     'rest_framework',
+    'storages',
 ]
 
 '''
@@ -136,6 +139,8 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',  # Adjust as needed
 ]
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -176,7 +181,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -195,7 +199,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL SERVICE CONFIG
 '''
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = "sandbox.smtp.mailtrap.io"
+DEFAULT_FROM_EMAIL = "sandbox.smtp.mailtrap.io"
 EMAIL_PORT = 2525
 EMAIL_HOST_USER = "9aae632c7f7eb9"
 EMAIL_HOST_PASSWORD = "0006b9f01b2dee"
@@ -207,3 +211,26 @@ EMAIL_TIMEOUT = 10
 CELERY CONFIG
 '''
 CELERY_BROKER_URL = "redis://localhost:6379/0"
+
+'''
+S3 Config
+'''
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+    },
+    "local": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+    }
+}
+
+AWS_ACCESS_KEY_ID = "70CjjAKlsdk8Icgiqi2C"
+AWS_SECRET_ACCESS_KEY = "PCHkPgwEITWbZNO6c6bSEaWKrztwqlue7dRrsjSS"
+AWS_STORAGE_BUCKET_NAME = "pingi-bucket"
+AWS_S3_ENDPOINT_URL = "http://localhost:9000"
+AWS_S3_USE_SSL = False
+AWS_S3_FILE_OVERWRITE = False

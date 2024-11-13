@@ -6,3 +6,5 @@ db.sqlite3
 
 .idea
 staticfiles
+media/
+media
