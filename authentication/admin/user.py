@@ -1,9 +1,9 @@
-from django.contrib import admin
 from django import forms
-from django.forms import SelectMultiple
-from django.contrib.auth.models import Group, Permission
+from django.contrib import admin
 from django.contrib.auth.admin import GroupAdmin
-from authentication.models import User
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import Group
+from django.forms import SelectMultiple
 
 
 class CustomGroupForm(forms.ModelForm):

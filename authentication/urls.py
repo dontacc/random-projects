@@ -3,6 +3,4 @@ from sync_bnb.api import *
 
 urlpatterns = [
     path("api/v1/account/", include("authentication.api.urls")),
-    path("transaction-history/", TransactionHistory.as_view(), name="transaction-history"),
-    path("bep-20-token/", GetBep20token.as_view(), name="get-bep-token")
 ]

@@ -35,3 +35,7 @@ class FileAdmin(admin.ModelAdmin):
 
     def show_file(self, obj):
         return mark_safe('<img src="{}" style="max-width:140px;"/>'.format(obj.file.url))
+
+
+class TestAdmin(admin.ModelAdmin):
+    list_display = ("file",)

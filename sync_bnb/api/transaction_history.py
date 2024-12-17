@@ -2,7 +2,6 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.conf import settings
-from core.authentication import JSONWebTokenAuthentication
 
 from authentication.utils import filter_transactions_by_address_and_to_attr
 import requests

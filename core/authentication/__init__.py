@@ -1,4 +1,5 @@
 from .authentication import JSONWebTokenAuthentication
 from .serializers import RefreshJSONWebTokenSerializer
+
 custom_refresh_jwt_token = RefreshJSONWebTokenSerializer
 from .custom_exception_handler import custom_exception_handler

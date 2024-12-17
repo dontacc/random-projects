@@ -31,7 +31,7 @@ ALLOWED_HOSTS = ["localhost"]
 
 # Application definition
 INSTALLED_APPS = [
-    'jazzmin',
+    # 'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,10 +44,14 @@ INSTALLED_APPS = [
     'sync_bnb',
     's3',
     'core',
+    'wallet',
 
     # 3rd-party packages
     'rest_framework',
     'storages',
+    'django5_recaptcha_admin_login',
+    'django5_recaptcha_admin_login.captcha',
+
 ]
 
 '''
@@ -61,14 +65,21 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'core.middleware.CheckTokenTypes',
 ]
 
 ROOT_URLCONF = 'user_authentication.urls'
 
+RECAPTCHA_PUBLIC_KEY = "6LdgDp4qAAAAABp8dkE-v_W_OeDcBimUz-t-LKLE"
+RECAPTCHA_PRIVATE_KEY = "6LdgDp4qAAAAAHRBgmWkRCZuJWog8uYqkRHIQw28"
+
+# RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY')
+# RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY')
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -112,7 +123,7 @@ JWT CONFIGS
 '''
 AUTH_USER_MODEL = "authentication.User"
 JWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=10),
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=10),
     'JWT_ALGORITHM': 'HS256',
     'JWT_ALLOW_REFRESH': True,
     'JWT_AUTH_HEADER_PREFIX': 'Bearer'
@@ -198,14 +209,27 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 '''
 EMAIL SERVICE CONFIG
 '''
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# DEFAULT_FROM_EMAIL = "sandbox.smtp.mailtrap.io"
+# EMAIL_PORT = 2525
+# EMAIL_HOST_USER = "9aae632c7f7eb9"
+# EMAIL_HOST_PASSWORD = "0006b9f01b2dee"
+# EMAIL_USE_TLS = False
+# EMAIL_USE_SSL = False
+# EMAIL_TIMEOUT = 10
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-DEFAULT_FROM_EMAIL = "sandbox.smtp.mailtrap.io"
-EMAIL_PORT = 2525
-EMAIL_HOST_USER = "9aae632c7f7eb9"
-EMAIL_HOST_PASSWORD = "0006b9f01b2dee"
-EMAIL_USE_TLS = False
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = "arianminooei@gmail.com"
+EMAIL_PORT = 587  # 25 for non secure protocol or connections
+EMAIL_HOST_PASSWORD = "kmjo mzxi bmfg snve"
+EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_TIMEOUT = 10
+
+import certifi
+
+SSL_CERT_FILE = certifi.where()
 
 '''
 CELERY CONFIG
@@ -234,3 +258,6 @@ AWS_STORAGE_BUCKET_NAME = "pingi-bucket"
 AWS_S3_ENDPOINT_URL = "http://localhost:9000"
 AWS_S3_USE_SSL = False
 AWS_S3_FILE_OVERWRITE = False
+
+# Telegram
+TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", None)
