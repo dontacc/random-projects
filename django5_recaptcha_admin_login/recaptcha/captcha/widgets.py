@@ -4,7 +4,7 @@ from urllib.parse import urlencode
 from django.conf import settings
 from django.forms import widgets
 
-from django5_recaptcha_admin_login.captcha.constants import DEFAULT_RECAPTCHA_DOMAIN
+from django5_recaptcha_admin_login.recaptcha.captcha.constants import DEFAULT_RECAPTCHA_DOMAIN
 
 
 class ReCaptchaBase(widgets.Widget):

@@ -1,3 +1,3 @@
 from .login import LoginAPI
-from .test import Test, UserAPIView, ListUserAPIView, CreateAPI, UpdateResponseAPI
+from .test import *
 from .sql_user import SqlUser

@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.core import checks
 
-from django5_recaptcha_admin_login.captcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
+from django5_recaptcha_admin_login.recaptcha.captcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
 
 
 def recaptcha_key_check(app_configs, **kwargs):

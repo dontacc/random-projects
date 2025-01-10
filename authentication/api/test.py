@@ -1,27 +1,74 @@
 from rest_framework import generics
-from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.exceptions import ValidationError
+from rest_framework.response import Response
 
 from authentication import serializers
 from authentication.models import User
 from core.pagination import CustomCursorPagination
+from rest_framework.decorators import action
+from django.utils import timezone
+from django.utils.timezone import make_aware
 
 
-class Test(APIView):
-    authentication_classes = ()
-    permission_classes = ()
+class Test2(APIView):
+    permission_classes = []
 
-    def get(self, request):
-        import secrets
+    def put(self, request):
+        user = User.objects.get(id=1)
+        serializer = serializers.UpdatePhoneNumberSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response()
 
-        return Response()
+        return Response(serializer.errors)
 
 
-class UserAPIView(generics.RetrieveAPIView):
-    queryset = User.objects.all()
+class Test(generics.RetrieveUpdateAPIView):
+    serializer_class = serializers.UpdatePhoneNumberSerializer
+    permission_classes = []
+
+    def get_object(self):
+        return User.objects.get(id=1)
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            print("sadasd")
+        return Response(serializer.data)
+
+
+class Test1(generics.ListAPIView):
     serializer_class = serializers.ListDataSerializer
     permission_classes = []
+    lookup_field = "phone_number"
+
+    def get_queryset(self):
+        return User.objects.all()
+
+    def filter_queryset(self, queryset):
+        return queryset.filter(id=2)
+
+
+#     user = User.objects.filter(phone_number=self.request.GET["phone_number"])
+#     return Response(
+#         {"data": "sdasdasdasda"}
+#     )
+
+
+class UserAPIView(generics.GenericAPIView):
+    serializer_class = serializers.ListDataSerializer
+    permission_classes = []
+
+    def filter_queryset(self, queryset):
+        print("asdasdas")
+        print(queryset)
+        return queryset
+
+    def get_queryset(self):
+        return User.objects.get(id=1)
+
+    # def retrieve(self, request, *args, **kwargs):
+    #     return Response()
 
     # lookup_field = "phone_number"
 
@@ -96,4 +143,3 @@ class UpdateResponseAPI(generics.UpdateAPIView):
     def get_object(self):
         queryset = User.objects.get(id=2)
         return queryset
-

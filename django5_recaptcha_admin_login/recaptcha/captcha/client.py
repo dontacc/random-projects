@@ -4,7 +4,7 @@ from urllib.request import ProxyHandler, Request, build_opener
 
 from django.conf import settings
 
-from django5_recaptcha_admin_login.captcha.constants import DEFAULT_RECAPTCHA_DOMAIN
+from django5_recaptcha_admin_login.recaptcha.captcha.constants import DEFAULT_RECAPTCHA_DOMAIN
 
 RECAPTCHA_SUPPORTED_LANUAGES = ("en", "nl", "fr", "de", "pt", "ru", "es", "tr")
 

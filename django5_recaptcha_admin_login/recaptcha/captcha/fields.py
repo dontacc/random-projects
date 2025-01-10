@@ -7,9 +7,9 @@ from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from django5_recaptcha_admin_login.captcha import client
-from django5_recaptcha_admin_login.captcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
-from django5_recaptcha_admin_login.captcha.widgets import ReCaptchaBase, ReCaptchaV2Checkbox
+from django5_recaptcha_admin_login.recaptcha.captcha import client
+from django5_recaptcha_admin_login.recaptcha.captcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
+from django5_recaptcha_admin_login.recaptcha.captcha.widgets import ReCaptchaBase, ReCaptchaV2Checkbox
 
 logger = logging.getLogger(__name__)
 

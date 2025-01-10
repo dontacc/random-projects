@@ -18,7 +18,8 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from emails.api import *
-from django5_recaptcha_admin_login.recaptcha import admin
+from django.contrib import admin
+# from django5_recaptcha_admin_login.recaptcha import admin
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ["localhost"]
 
 # Application definition
 INSTALLED_APPS = [
+    'daphne',
     # 'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -49,9 +50,8 @@ INSTALLED_APPS = [
     # 3rd-party packages
     'rest_framework',
     'storages',
-    'django5_recaptcha_admin_login',
-    'django5_recaptcha_admin_login.captcha',
-
+    # 'django5_recaptcha_admin_login.recaptcha',
+    # 'django5_recaptcha_admin_login.recaptcha.captcha',
 ]
 
 '''
@@ -79,7 +79,9 @@ RECAPTCHA_PRIVATE_KEY = "6LdgDp4qAAAAAHRBgmWkRCZuJWog8uYqkRHIQw28"
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -92,7 +94,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'user_authentication.wsgi.application'
+ASGI_APPLICATION = 'user_authentication.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases

@@ -1,0 +1,17 @@
+[tool.poetry]
+package-mode = false
+name = "requirements"
+version = "0.1.0"
+description = ""
+authors = ["Arian <arianminooei@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+requests = "^2.32.3"
+daphne = "^4.1.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

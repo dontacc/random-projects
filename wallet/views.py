@@ -19,14 +19,10 @@ ali_shams_address_wallet = "0xA437f0F7e43b22C6501ec90c5b4a7a0ad36be0C7"
 
 
 class SendTransaction:
-
     @staticmethod
     def create_wallet():
-        gas_price = web3.eth.gas_price
-
         account = Account.create()
         wallet_address = account.address
-        pv_key = account.key.hex()
         Wallet.objects.get_or_create(
             user_id=User.objects.get(id=2).id,
             defaults={
@@ -68,4 +64,4 @@ class SendTransaction:
 
 # SendTransaction.send_transaction()
 
-SendTransaction.create_wallet()
+# SendTransaction.create_wallet()
