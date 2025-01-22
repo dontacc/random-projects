@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     's3',
     'core',
     'wallet',
+    'websocket',
 
     # 3rd-party packages
     'rest_framework',
@@ -242,24 +243,32 @@ CELERY_BROKER_URL = "redis://localhost:6379/0"
 S3 Config
 '''
 
-STORAGES = {
+# STORAGES = {
+#     "default": {
+#         "BACKEND": "storages.backends.s3.S3Storage",
+#     },
+#     "local": {
+#         "BACKEND": "django.core.files.storage.FileSystemStorage",
+#     },
+#     "staticfiles": {
+#         "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+#     }
+# }
+#
+# AWS_ACCESS_KEY_ID = "70CjjAKlsdk8Icgiqi2C"
+# AWS_SECRET_ACCESS_KEY = "PCHkPgwEITWbZNO6c6bSEaWKrztwqlue7dRrsjSS"
+# AWS_STORAGE_BUCKET_NAME = "pingi-bucket"
+# AWS_S3_ENDPOINT_URL = "http://localhost:9000"
+# AWS_S3_USE_SSL = False
+# AWS_S3_FILE_OVERWRITE = False
+
+
+CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "storages.backends.s3.S3Storage",
-    },
-    "local": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": [("127.0.0.1", "6379")]
     }
 }
-
-AWS_ACCESS_KEY_ID = "70CjjAKlsdk8Icgiqi2C"
-AWS_SECRET_ACCESS_KEY = "PCHkPgwEITWbZNO6c6bSEaWKrztwqlue7dRrsjSS"
-AWS_STORAGE_BUCKET_NAME = "pingi-bucket"
-AWS_S3_ENDPOINT_URL = "http://localhost:9000"
-AWS_S3_USE_SSL = False
-AWS_S3_FILE_OVERWRITE = False
 
 # Telegram
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", None)

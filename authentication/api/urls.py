@@ -10,6 +10,7 @@ urlpatterns = [
     path("test/", Test.as_view()),
     path("test1/", Test1.as_view()),
     path("test2/", Test2.as_view()),
+    path("update_username/", UpdateUsernameAPI.as_view()),
     path("sql-test/", SqlUser.as_view(), name="sql-user"),
     path("user-data/<str:pk>", UserAPIView.as_view()),
     path("list-user-data/", ListUserAPIView.as_view()),
