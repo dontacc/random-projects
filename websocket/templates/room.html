@@ -12,10 +12,10 @@
             <h1>Enter Room</h1>
             <form action="" method="POST">
                 {% csrf_token %}
-                <label for="">Username</label><br>
+                <label for="" class="label">Username</label><br>
                 <input type="text" placeholder="Username" name="username" required><br>
-                <label for="">Room name</label><br>
-                <input type="text" placeholder="room name" name="room" required><br>
+                <label for="" class="label">Room name</label><br>
+                <input type="text" placeholder="room name" name="room_name" required><br>
                 <center><button type="submit">Submit</button></center><br>
             </form>
         </div>
@@ -23,10 +23,18 @@
 </body>
 <style>
 
+
+
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+}
+
+.label {
+    margin: 0px;
+    padding: 10px;
+    font-size: 17px;
 }
 
 .parent {
@@ -51,7 +59,7 @@
 }
 
 form {
-    width: 80%;
+    width: 50%;
 }
 
 input {
@@ -59,7 +67,7 @@ input {
     border: 1px solid dodgerblue;
     width: 100%;
     margin: 10px;
-    border-radius: 5px;
+    border-radius: 3px;
 }
 
 button {

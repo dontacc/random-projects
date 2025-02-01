@@ -21,4 +21,4 @@ class User(AbstractBaseModel, AbstractUser, PermissionsMixin):
     user_image = models.ImageField(upload_to="media/", validators=[validate_file_size])
 
     def __str__(self):
-        return self.phone_number
+        return self.username

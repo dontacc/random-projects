@@ -1,11 +1,11 @@
 import json
 
+from asgiref.sync import sync_to_async
 from channels.consumer import SyncConsumer
 from channels.generic.websocket import WebsocketConsumer, AsyncWebsocketConsumer
-from asgiref.sync import sync_to_async
-from channels.db import database_sync_to_async
-
+from websocket.models import *
 from authentication.models import User
+from channels.db import database_sync_to_async
 
 
 class UserInfo:
@@ -74,12 +74,80 @@ class EchoWebsocketMessage(WebsocketConsumer):
 
 class AsyncWebsocketConsumerEcho(AsyncWebsocketConsumer):
     async def connect(self):
-        groups = self.groups
+        self.room_name = "test_room"
+        self.room_group_name = f"chat_{self.room_name}"
+
+        self.channel_layer.group_add(
+            self.room_name,
+            self.channel_name
+        )
+
         await self.accept()
 
     async def receive(self, text_data=None, bytes_data=None):
-        user_full_name = await UserInfo.get_full_name()
-        data = json.dumps(user_full_name)
-        await self.send(text_data=data)
+        text_data = json.loads(text_data)
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                "type": "chat_message",
+                "message": text_data
+            }
+        )
 
 
+class GroupChatConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        print(self.scope)
+        self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
+
+        await self.channel_layer.group_add(self.room_name, self.channel_name)
+        await self.accept()
+
+    async def disconnect(self, code):
+        self.channel_layer.group_discard(
+            self.room_name,
+            self.channel_name
+        )
+
+    async def receive(self, text_data=None, bytes_data=None):
+        json_data = json.loads(text_data)
+        event = {
+            "type": "send_message",
+            "message": json_data
+        }
+        await self.channel_layer.group_send(self.room_name, event)
+
+    async def send_message(self, event: dict):
+        data = event["message"]
+        await self.create_message(data=data)
+        response_data = {
+            "sender": data["sender"],
+            "message": data["message"],
+        }
+        await self.send(text_data=json.dumps({"message": response_data}))
+
+    @database_sync_to_async
+    def create_message(self, data: dict):
+        get_room_name = Room.objects.get(room_name=data["room_name"])
+        if not Message.objects.filter(message__exact=data["message"]).exists():
+            user, _ = User.objects.get_or_create(username=data["sender"])
+            Message.objects.create(room_id=get_room_name.id, sender_id=user.id, message=data["message"])
+
+
+class PrivateChatConsumer(AsyncWebsocketConsumer):
+
+    async def connect(self):
+        self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
+
+        await self.accept()
+
+        await self.add_user_to_room(self.room_name, self.channel_name)
+
+    async def disconnect(self, code):
+        await self.channel_layer.group_discard(self.room_name, self.channel_name)
+
+    def receive(self, text_data=None, bytes_data=None):
+        json_data = json.loads(text_data)
+
+    def add_user_to_room(self, room, channel_name, username):
+        pass

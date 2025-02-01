@@ -9,9 +9,9 @@ class Room(models.Model):
 
 
 class Message(models.Model):
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name="messages")
     sender = models.ForeignKey("authentication.User", on_delete=models.SET_NULL, null=True)
     message = models.TextField()
 
     def __str__(self):
-        return self.room
+        return self.sender.username

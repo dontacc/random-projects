@@ -27,8 +27,7 @@ SECRET_KEY = 'django-insecure-f=npz2(++_n!ckjb59one8l73dy84pn2$=xt)4^gn2yo@jj!m_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", True)
 
-ALLOWED_HOSTS = ["localhost"]
-
+ALLOWED_HOSTS = ["*"]
 # Application definition
 INSTALLED_APPS = [
     'daphne',
@@ -62,7 +61,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -94,6 +93,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 ASGI_APPLICATION = 'user_authentication.asgi.application'
 
@@ -140,9 +140,9 @@ REST_FRAMEWORK = {
         'core.authentication.JSONWebTokenAuthentication',
     ),
     'EXCEPTION_HANDLER': 'core.authentication.custom_exception_handler',
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ),
 }
 
 '''
@@ -266,7 +266,9 @@ S3 Config
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": [("127.0.0.1", "6379")]
+        "CONFIG": {
+            "hosts": [("127.0.0.1", "6379")]
+        }
     }
 }
 
