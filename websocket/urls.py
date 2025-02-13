@@ -1,8 +1,5 @@
-from django.urls import path
-from .views import *
+from django.urls import path, include
 
 urlpatterns = [
-    path("", create_room),
-    path("<str:room_name>/<str:username>", message, name="room"),
-    path("api/v1/send_message", SendMessageAPI.as_view()),
+    path("websocket/", include("websocket.api.urls")),
 ]

@@ -15,12 +15,17 @@ class UpdateUsernameAPI(generics.UpdateAPIView):
         return User.objects.get(id=1)
 
 
-class Test(generics.GenericAPIView):
+class Test(generics.ListAPIView):
     serializer_class = serializers.UpdatePhoneNumberSerializer
     permission_classes = []
 
     def get_queryset(self):
-        return User.objects.filter(id=1)
+        return User.objects.filter(id=3)
+
+    def list(self, request, *args, **kwargs):
+        users = self.get_queryset()
+        serializer = serializers.UpdateUserSerializer(users, many=True)
+        return Response(data={"users": serializer.data})
 
 
 class Test1(generics.ListAPIView):

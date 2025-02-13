@@ -2,7 +2,7 @@ from rest_framework import serializers
 from authentication.models import User
 
 
-class UpdatePhoneNumberSerializer(serializers.Serializer):
+class UpdatePhoneNumberSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=False)
 
     class Meta:
@@ -12,10 +12,16 @@ class UpdatePhoneNumberSerializer(serializers.Serializer):
             "username",
         ]
 
-    def validate(self, attrs):
-        attrs["username"] = attrs["phone_number"]
-        print(attrs)
-        return attrs
+    def create(self, validated_data):
+        user = User.objects.create(username=validated_data["phone_number"], phone_number=validated_data["phone_number"])
+        return user
+    # def validate(self, attrs):
+    #     print(attrs)
+    #     attrs["username"] = attrs["phone_number"]
+    #     return attrs
+
+
+
     # phone_number = serializers.CharField()
     # username = serializers.CharField()
 

@@ -5,6 +5,6 @@ venv
 db.sqlite3
 
 .idea
-staticfiles
+static
 media/
 media

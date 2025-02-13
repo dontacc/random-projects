@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import *
+from websocket.models import *
 
 
 def create_room(request):
@@ -17,8 +17,7 @@ def create_room(request):
             new_room.save()
 
         return redirect("room", room_name=room, username=username)
-
-    return render(request, "room.html")
+    return render(request, "simple_chat/room.html")
 
 
 def message(request, room_name, username):
@@ -30,7 +29,7 @@ def message(request, room_name, username):
         "user": username,
         "room_name": room_name
     }
-    return render(request, "message.html", context=context)
+    return render(request, "simple_chat/message.html", context=context)
 
 
 class CreateUser(APIView):

@@ -8,4 +8,6 @@ websocket_urlpatterns = [
 
     path("ws/chat/<str:room_name>/", GroupChatConsumer.as_asgi()),
 
+    path("ws/<int:id>/", PrivateChatConsumer.as_asgi()),
+    path("ws/check_online/", OnlineStatusConsumer.as_asgi()),
 ]
