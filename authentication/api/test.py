@@ -1,56 +1,21 @@
+import random
+
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
 from authentication import serializers
-from authentication.models import User
+from authentication.models import *
 from core.pagination import CustomCursorPagination
-
-
-class UpdateUsernameAPI(generics.UpdateAPIView):
-    serializer_class = serializers.UpdateUsernameSerializer
-    permission_classes = []
-
-    def get_object(self):
-        return User.objects.get(id=1)
-
-
-class Test(generics.ListAPIView):
-    serializer_class = serializers.UpdatePhoneNumberSerializer
-    permission_classes = []
-
-    def get_queryset(self):
-        return User.objects.filter(id=3)
-
-    def list(self, request, *args, **kwargs):
-        users = self.get_queryset()
-        serializer = serializers.UpdateUserSerializer(users, many=True)
-        return Response(data={"users": serializer.data})
-
-
-class Test1(generics.ListAPIView):
-    serializer_class = serializers.ListDataSerializer
-    permission_classes = []
-    lookup_field = "phone_number"
-
-    def get_queryset(self):
-        return User.objects.all()
-
-    def filter_queryset(self, queryset):
-        return queryset.filter(id=2)
-
-
-class Test2(APIView):
-    permission_classes = []
-
-    def put(self, request):
-        user = User.objects.get(id=1)
-        serializer = serializers.UpdatePhoneNumberSerializer(user, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response()
-
-        return Response(serializer.errors)
+from django.db.models import Case
+from django.db.models import When
+from django.db.models import Value
+from django.db.models import Sum
+from django.db.models import Count
+from django.db.models import Q
+from django.db.models import F
+from django.db.models import OuterRef
+from django.db.models import Subquery
+from django.db import connection
 
 
 class UserAPIView(generics.GenericAPIView):
@@ -58,8 +23,6 @@ class UserAPIView(generics.GenericAPIView):
     permission_classes = []
 
     def filter_queryset(self, queryset):
-        print("asdasdas")
-        print(queryset)
         return queryset
 
     def get_queryset(self):
@@ -71,12 +34,49 @@ class UserAPIView(generics.GenericAPIView):
     # lookup_field = "phone_number"
 
 
+class CaseWhenAPI(APIView):
+
+    def get(self, request):
+        """
+        Case When Value in django orm
+        """
+        query1 = Wallet.objects.filter(user_id=1).aggregate(
+            total_amount=Sum("amount")
+        )
+
+        wallets = Wallet.objects.annotate(
+            total_amount=Case(
+                When(user_id=14, then=Value("1"))
+            )
+        ).values_list("user__username", "total_amount")
+
+        """
+        inja mige total_amount ro age title tosh test bood value total_amount 500 bashe
+        """
+        wallets1 = Wallet.objects.annotate(
+            total_amount=Case(
+                When(title__contains="test", then=Value("500")),
+                default=F("amount")
+            )
+        ).values_list("user__username", "total_amount")
+
+        wallets2 = Wallet.objects.filter(user_id=1).aggregate(balance=Sum("amount"))
+
+        wallets3 = Wallet.objects.filter(
+            user_id=14
+        ).exclude(
+            title="test13"
+        ).values_list("title", flat=True)
+
+        users = User.objects.filter(email__isnull=False)
+
+        return Response()
+
+
 class ListUserAPIView(generics.ListAPIView):
     serializer_class = serializers.ListDataSerializer
     permission_classes = []
     pagination_class = CustomCursorPagination
-
-    # lookup_field = "phone_number"
 
     def get_queryset(self):
         user = User.objects.filter(is_active=True)
@@ -99,13 +99,22 @@ class CreateAPI(generics.CreateAPIView):
     permission_classes = ()
     serializer_class = serializers.CreateUserSerializer
 
+    def post(self, request, *args, **kwargs):
+        """
+            when we do something very custom
+            we should override post method
+
+        """
+        ser = self.get_serializer()
+
+        return Response()
+
     def create(self, request, *args, **kwargs):
-        serilaizer = self.get_serializer(data=self.request.data)
-        if serilaizer.is_valid():
-            data = serilaizer.save()
-            return Response(
-                data=data
-            )
+        """
+        """
+        print("123123123")
+        return Response()
+
     #     else:
     #         return Response({"error": "bad"})
     #

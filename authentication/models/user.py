@@ -3,6 +3,7 @@ from core.models import AbstractBaseModel
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from authentication.utils import PhoneNumberValidator
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 def validate_file_size(value):

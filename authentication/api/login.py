@@ -3,7 +3,6 @@ from authentication.models import User
 from rest_framework_jwt.settings import api_settings
 from rest_framework.response import Response
 from authentication.utils import OTP
-from django.core.exceptions import ValidationError
 from authentication.utils.phone_number_validator import PhoneNumberValidator
 from unidecode import unidecode
 

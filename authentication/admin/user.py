@@ -12,7 +12,7 @@ class CustomGroupForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'permissions': SelectMultiple(attrs={
-                'style': 'width: 500px; height: 400px;',
+                'style': 'width: 600px; height: 400px;',
             })
         }
 
@@ -25,6 +25,7 @@ class CustomGroupAdmin(GroupAdmin):
 class UserAdmin(admin.ModelAdmin):
     list_display = ("id", "username")
     readonly_fields = ("password",)
+    list_display_links = ("id", "username")
 
     # fieldsets = [
     #     ("Personal", {"fields": ["username", "first_name"]})

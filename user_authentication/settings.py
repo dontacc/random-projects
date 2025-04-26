@@ -46,10 +46,12 @@ INSTALLED_APPS = [
     'core',
     'wallet',
     'websocket',
+    'pika',
 
     # 3rd-party packages
     'rest_framework',
     'storages',
+    'django_extensions',
     # 'django5_recaptcha_admin_login.recaptcha',
     # 'django5_recaptcha_admin_login.recaptcha.captcha',
 ]

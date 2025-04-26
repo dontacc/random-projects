@@ -4,11 +4,16 @@ from rest_framework.response import Response
 
 
 class CreateUserSerializer(serializers.Serializer):
-    username = serializers.CharField(max_length=31, required=True)
+    username = serializers.CharField(max_length=31, required=False)
 
     def create(self, validated_data):
-        if 1 == 1:
-            return {"res": validated_data["username"]}
-            raise serializers.ValidationError("saaaass")
-        print(validated_data["username"])
-        return {"token": validated_data["username"]}
+        print(self.context["request"].user)
+        print(validated_data)
+        return validated_data
+
+    # def create(self, validated_data):
+    #     if 1 == 1:
+    #         return {"res": validated_data["username"]}
+    #         raise serializers.ValidationError("saaaass")
+    #     print(validated_data["username"])
+    #     return {"token": validated_data["username"]}
