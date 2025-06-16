@@ -5,6 +5,9 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import Group
 from django.forms import SelectMultiple
 
+from django.contrib import admin
+from authentication.models import *
+
 
 class CustomGroupForm(forms.ModelForm):
     class Meta:
@@ -22,7 +25,17 @@ class CustomGroupAdmin(GroupAdmin):
     # filter_horizontal = ("permissions",)
 
 
+class WalletInline(admin.StackedInline):
+    """
+    StackedInline or TabularInline
+    these classes is only use for ForeignKey or OneToOne fields
+    """
+    model = Wallet
+    max_num = 1
+
+
 class UserAdmin(admin.ModelAdmin):
+    inlines = [WalletInline]
     list_display = ("id", "username")
     readonly_fields = ("password",)
     list_display_links = ("id", "username")

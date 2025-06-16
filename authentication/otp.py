@@ -1,5 +1,5 @@
-from django.core.cache import cache
 import secrets
+from django.core.cache import cache
 
 
 class OTP:
